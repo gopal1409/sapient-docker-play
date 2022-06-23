@@ -3,7 +3,11 @@
 -
 ###this minus in yaml indicate a list of items. the play contains a list of play
   hosts: client
-  
+  vars:
+    container_count: 4
+    default_container_name: sapient 
+    default_container_image: gopal1409/chatapp
+    default_container_command: sleep 1
   tasks:
     - name: update the vm 
       apt:
@@ -40,4 +44,15 @@
     - name: install docker module for python 
       pip:
         name: docker 
-
+  #download docker image
+  #and run it as container
+    - name: download the docker image
+      docker_image:
+        name: "{{default_container_image}}"
+      source: pull 
+    - name: run the docker container 
+      docker_container:
+        name: "{{default_container_name}}{{item}}"
+        image: "{{default_container_image}}"
+        command: "{{default_container_command}}"
+      with_sequence: count={{container_count}}
