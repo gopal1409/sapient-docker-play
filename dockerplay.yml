@@ -44,8 +44,7 @@
     - name: install docker module for python 
       pip:
         name: docker 
-  #download docker image
-  #and run it as container
+  
     - name: download the docker image
       docker_image:
         name: "{{default_container_image}}"
